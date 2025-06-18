@@ -1,11 +1,7 @@
-import type { AuthResponse } from '$lib/types/auth';
+import type { StoreAuth } from '$lib/types/auth';
 import { writable } from 'svelte/store';
 
-export const authStore = writable<AuthResponse>({
+export const authStore = writable<StoreAuth>({
 	token: null,
-	refreshToken: null,
-	username: null,
-	expiresIn: null,
-	clientId: null,
-	tokenType: null
+	refreshToken: null
 });

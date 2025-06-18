@@ -1,7 +1,13 @@
 <script lang="ts">
 	import '$lib/style/global.scss';
+	import { initializeAuthStore } from '$lib/utils/tokenGetter';
+	import { onMount } from 'svelte';
 
 	let { children } = $props();
+
+	onMount(() => {
+		initializeAuthStore();
+	});
 </script>
 
 <div class="main-layout">

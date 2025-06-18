@@ -6,3 +6,5 @@ export type AuthResponse = {
 	tokenType: string | null;
 	username: string | null;
 };
+
+export type StoreAuth = Pick<AuthResponse, 'token' | 'refreshToken'>;

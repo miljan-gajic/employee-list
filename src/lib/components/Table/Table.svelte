@@ -1,5 +1,11 @@
 <script lang="ts">
+	import { authStore } from '$lib/stores/auth';
+	import type { StoreAuth } from '$lib/types/auth';
 	import _ from 'lodash';
+	import { onDestroy } from 'svelte';
+	import { writable } from 'svelte/store';
+
+	import ActionButton from '$lib/components/Button/Button.svelte';
 	// Data prop - make it reactive by exporting it
 	export let data = [
 		{
@@ -133,10 +139,26 @@
 	// $: totalPages = Math.ceil(totalItems / itemsPerPage);
 	$: displayedItems = Math.min(itemsPerPage, totalItems);
 	$: footerText = `${displayedItems} geladen von ${totalItems} Ergebnissen`;
+
+	const currentAuth = writable<StoreAuth | null>(null);
+
+	// Subscribe to the store and update the variable
+	const unsubscribe = authStore.subscribe((auth) => {
+		currentAuth.set(auth);
+	});
+
+	function logAuthValue() {
+		console.log('Current auth value:', $currentAuth?.token);
+	}
+
+	onDestroy(() => {
+		unsubscribe();
+	});
 </script>
 
 <div class="data-table-container">
 	<div class="table-wrapper">
+		<ActionButton on:click={logAuthValue}>click</ActionButton>
 		<table class="data-table">
 			<thead>
 				<tr>

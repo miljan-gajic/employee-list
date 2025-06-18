@@ -1,14 +1,15 @@
-import { browser } from '$app/environment';
+import { authStore } from '$lib/stores/auth';
+import type { StoreAuth } from '$lib/types/auth';
 
-export function getCookie(name: string): string | undefined {
-	if (!browser) return 'no browser';
+export function initializeAuthStore() {
+	const cookies = document.cookie.split(';').reduce<StoreAuth>((acc, cookie) => {
+		const [key, value] = cookie.trim().split('=') as [keyof StoreAuth, string];
+		acc[key] = decodeURIComponent(value) as StoreAuth[keyof StoreAuth];
+		return acc;
+	}, {} as StoreAuth);
 
-	const cookies = document.cookie.split(';');
-	for (const cookie of cookies) {
-		const [key, value] = cookie.trim().split('=');
-		if (key === name) {
-			return decodeURIComponent(value);
-		}
-	}
-	return undefined;
+	authStore.set({
+		token: cookies.token || null,
+		refreshToken: cookies.refreshToken || null
+	});
 }

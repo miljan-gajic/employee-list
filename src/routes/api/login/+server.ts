@@ -19,17 +19,19 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		const { token, refreshToken, expiresIn } = data;
 
 		cookies.set('token', token as string, {
-			path: '/',
-			httpOnly: true,
-			secure: true,
-			maxAge: expiresIn as number
+			path: '/', // Make the cookie accessible across the entire site
+			maxAge: expiresIn as number, // Set the cookie's expiration time
+			httpOnly: false, // Allow access via JavaScript (document.cookie)
+			secure: false, // Set to true in production (requires HTTPS)
+			sameSite: 'lax' // Adjust based on your needs
 		});
 
 		cookies.set('refreshToken', refreshToken as string, {
 			path: '/',
-			httpOnly: true,
-			secure: true,
-			maxAge: 60 * 60 * 24 * 90
+			maxAge: 60 * 60 * 24 * 90,
+			httpOnly: false,
+			secure: false,
+			sameSite: 'lax'
 		});
 
 		return new Response(JSON.stringify({ message: 'Login successful' }), {
