@@ -9,7 +9,6 @@ export async function api<T>(
 	internal: boolean = true
 ): Promise<T> {
 	const BASE_URL = internal ? INTERNAL_BASE_URL : EXTERNAL_BASE_URL;
-	console.log(`API request: ${BASE_URL}${endpoint}`);
 	const response = await fetch(`${BASE_URL}${endpoint}`, {
 		headers: {
 			'Content-Type': 'application/json',

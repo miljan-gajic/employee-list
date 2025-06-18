@@ -6,7 +6,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 	const { email, password } = await request.json();
 
 	try {
-		console.log(`API request: /auth/sign-in`);
 		const data = await api<AuthResponse>(
 			'/auth/sign-in',
 			{
@@ -19,14 +18,14 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
 		const { token, refreshToken, expiresIn } = data;
 
-		cookies.set('token', token, {
+		cookies.set('token', token as string, {
 			path: '/',
 			httpOnly: true,
 			secure: true,
-			maxAge: expiresIn
+			maxAge: expiresIn as number
 		});
 
-		cookies.set('refreshToken', refreshToken, {
+		cookies.set('refreshToken', refreshToken as string, {
 			path: '/',
 			httpOnly: true,
 			secure: true,

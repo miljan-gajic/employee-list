@@ -30,20 +30,10 @@
 			isSubmitting = false;
 		}
 	}
-
-	function handleInputChange(event: Event) {
-		const target = event.target as HTMLInputElement;
-		employeeCount = target.value;
-	}
 </script>
 
 <FormWrapper title="Anzahl der Mitarbeiter die angelegt werden">
-	<NumberInput
-		bind:value={employeeCount}
-		placeholder="Anzahl eingeben"
-		disabled={isSubmitting}
-		on:change={handleInputChange}
-	/>
+	<NumberInput bind:value={employeeCount} placeholder="Anzahl eingeben" disabled={isSubmitting} />
 
 	<ActionButton
 		variant="primary"

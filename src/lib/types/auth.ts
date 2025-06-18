@@ -1,8 +1,8 @@
 export type AuthResponse = {
-	clientId: string;
-	expiresIn: number;
-	refreshToken: string;
-	token: string;
-	tokenType: string;
-	username: string;
+	clientId: string | null;
+	expiresIn: number | null;
+	refreshToken: string | null;
+	token: string | null;
+	tokenType: string | null;
+	username: string | null;
 };

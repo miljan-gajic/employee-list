@@ -10,9 +10,11 @@
 	let email = '';
 	let password = '';
 	let error: Error = new Error('');
+	let loading = false;
 
 	async function handleLogin() {
 		try {
+			loading = true;
 			await api('/api/login', {
 				method: 'POST',
 				headers: {
@@ -24,6 +26,8 @@
 			goto('/');
 		} catch (err) {
 			error.message = (err as Error).message || 'Login failed. Please try again.';
+		} finally {
+			loading = false;
 		}
 	}
 </script>
@@ -47,6 +51,7 @@
 						placeholder="E-Mail-Adresse"
 						bind:value={email}
 						autocomplete="email"
+						disabled={loading}
 					/>
 				</div>
 
@@ -56,10 +61,11 @@
 						placeholder="Passwort"
 						bind:value={password}
 						autocomplete="current-password"
+						disabled={loading}
 					/>
 				</div>
 
-				<Button type="submit" variant="primary">Anmelden</Button>
+				<Button type="submit" variant="primary" {loading} disabled={loading}>Anmelden</Button>
 			</form>
 		</Card>
 	</div>

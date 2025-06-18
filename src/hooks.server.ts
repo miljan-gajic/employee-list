@@ -11,5 +11,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 		throw redirect(302, '/login');
 	}
 
+	if (token && event.url.pathname === '/login') {
+		throw redirect(302, '/');
+	}
+
 	return resolve(event);
 };
