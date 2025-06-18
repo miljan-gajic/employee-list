@@ -54,22 +54,30 @@
 
 	.input-label {
 		font-size: 12px;
-		font-weight: 500;
+		font-weight: 600;
+		font-family:
+			'Inter',
+			-apple-system,
+			sans-serif;
 		color: #6c757d;
 		margin-bottom: 4px;
 	}
 
 	.number-input {
 		padding: 10px 12px;
-		border: 1px solid #ced4da;
-		border-radius: 4px;
-		font-size: 14px;
-		font-family: inherit;
+		border: 1px solid #c3c8c2;
+		border-radius: 5px;
+		font-size: 16px;
+		font-family:
+			'Inter',
+			-apple-system,
+			sans-serif;
+		color: #c3c8c2;
 		background: white;
+		min-width: 260px;
 		transition:
 			border-color 0.15s ease-in-out,
 			box-shadow 0.15s ease-in-out;
-		min-width: 120px;
 
 		&:focus {
 			outline: none;

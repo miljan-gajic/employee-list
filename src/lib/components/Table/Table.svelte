@@ -179,17 +179,12 @@
 <style lang="scss">
 	.data-table-container {
 		background: white;
-		border-radius: 8px;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 		overflow: hidden;
+		min-width: 800px;
 		font-family:
 			'Inter',
 			-apple-system,
-			BlinkMacSystemFont,
-			'Segoe UI',
-			Roboto,
-			'Helvetica Neue',
-			Arial,
 			sans-serif;
 	}
 
@@ -228,6 +223,7 @@
 			position: sticky;
 			top: 0;
 			background: white;
+			box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
 			z-index: 10;
 		}
 	}
@@ -290,9 +286,13 @@
 	}
 
 	.table-footer {
+		height: 22px;
 		background-color: #fafafa;
 		border-top: 1px solid #e5e5e5;
-		padding: 12px 16px;
+		padding: 4px 24px;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
 
 		.footer-text {
 			font-size: 10px;

@@ -35,6 +35,8 @@
 		const target = event.target as HTMLInputElement;
 		employeeCount = target.value;
 	}
+
+	console.log({ isSubmitting });
 </script>
 
 <FormWrapper title="Anzahl der Mitarbeiter die angelegt werden">

@@ -20,7 +20,9 @@
 	{#if loading}
 		<span class="spinner"></span>
 	{/if}
-	<slot />
+	<span class="btn-label">
+		<slot />
+	</span>
 </button>
 
 <style lang="scss">
@@ -29,12 +31,9 @@
 		align-items: center;
 		justify-content: center;
 		gap: 8px;
-		font-family: inherit;
-		font-weight: 500;
 		text-align: center;
-		text-decoration: none;
 		border: 1px solid transparent;
-		border-radius: 6px;
+		border-radius: 1000px;
 		cursor: pointer;
 		transition: all 0.15s ease-in-out;
 		white-space: nowrap;
@@ -96,6 +95,21 @@
 				background-color: #10b981;
 				color: white;
 			}
+		}
+
+		.btn-label {
+			font-size: 14px;
+			font-weight: 400;
+			font-family:
+				'Inter',
+				-apple-system,
+				BlinkMacSystemFont,
+				'Segoe UI',
+				Roboto,
+				'Helvetica Neue',
+				Arial,
+				sans-serif;
+			color: #fbfefc;
 		}
 	}
 
