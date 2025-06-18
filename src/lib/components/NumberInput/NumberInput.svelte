@@ -8,6 +8,9 @@
 	export let min = undefined;
 	export let max = undefined;
 	export let step = 1;
+	export let type = 'text';
+	export let onInput: ((value?: string) => void) | null = null;
+	export let autocomplete: AutoFill | null = null;
 
 	const dispatch = createEventDispatcher();
 
@@ -17,7 +20,9 @@
 		}
 	) {
 		value = event.currentTarget.value;
-		dispatch('input', { value });
+		if (onInput) {
+			onInput(value);
+		}
 	}
 
 	function handleChange(event: Event) {
@@ -38,6 +43,8 @@
 		{min}
 		{max}
 		{step}
+		{type}
+		{autocomplete}
 		class="number-input"
 		on:input={handleInput}
 		on:change={handleChange}
