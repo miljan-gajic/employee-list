@@ -15,10 +15,13 @@
 		try {
 			await api('/api/login', {
 				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
 				body: JSON.stringify({ email, password })
 			});
 
-			goto('/dashboard');
+			goto('/');
 		} catch (err) {
 			error.message = (err as Error).message || 'Login failed. Please try again.';
 		}
