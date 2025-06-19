@@ -15,7 +15,7 @@
 	async function handleLogin() {
 		try {
 			loading = true;
-			await api('/api/login', {
+			await api('/api/auth/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -47,6 +47,7 @@
 			<form on:submit|preventDefault={handleLogin} class="login-form">
 				<div class="form-group">
 					<Input
+						id="login-email"
 						type="email"
 						placeholder="E-Mail-Adresse"
 						bind:value={email}
@@ -57,6 +58,7 @@
 
 				<div class="form-group">
 					<Input
+						id="login-password"
 						type="password"
 						placeholder="Passwort"
 						bind:value={password}

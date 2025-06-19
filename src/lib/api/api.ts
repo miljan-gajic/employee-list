@@ -21,7 +21,7 @@ export async function api<T>(
 
 	if (!response.ok) {
 		const error = await response.json();
-		throw new Error(error.message || 'API error');
+		throw new Error(error.message || 'API layer error');
 	}
 
 	return response.json() as Promise<T>;

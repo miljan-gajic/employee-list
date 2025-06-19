@@ -1,29 +1,20 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { api } from '$lib/api/api';
-import type { AuthResponse } from '$lib/types/auth';
+import { login } from '$lib/api/auth';
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	const { email, password } = await request.json();
 
 	try {
-		const data = await api<AuthResponse>(
-			'/auth/sign-in',
-			{
-				method: 'POST',
-				body: JSON.stringify({ email, password })
-			},
-			undefined,
-			false
-		);
+		const data = await login(email, password);
 
 		const { token, refreshToken, expiresIn } = data;
 
 		cookies.set('token', token as string, {
-			path: '/', // Make the cookie accessible across the entire site
-			maxAge: expiresIn as number, // Set the cookie's expiration time
-			httpOnly: false, // Allow access via JavaScript (document.cookie)
-			secure: false, // Set to true in production (requires HTTPS)
-			sameSite: 'lax' // Adjust based on your needs
+			path: '/',
+			maxAge: expiresIn as number,
+			httpOnly: false,
+			secure: false,
+			sameSite: 'lax'
 		});
 
 		cookies.set('refreshToken', refreshToken as string, {

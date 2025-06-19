@@ -2,12 +2,16 @@
 	import FormWrapper from '$lib/components/FormWrapper/FormWrapper.svelte';
 	import NumberInput from '$lib/components/NumberInput/NumberInput.svelte';
 	import ActionButton from '$lib/components/Button/Button.svelte';
+	import { generateEmployeeList } from '$lib/utils/randomData';
+	import { api } from '$lib/api/api';
+	import type { BulkImportEmployeeResponse } from '$lib/types/employee';
+	import { jobId } from '$lib/stores/bulkJob';
 
 	let employeeCount = '350';
 	let isSubmitting = false;
 
 	async function handleCreateEmployees() {
-		if (!employeeCount || parseInt(employeeCount) <= 0) {
+		if (!employeeCount || +employeeCount <= 0) {
 			alert('Bitte geben Sie eine gültige Anzahl ein.');
 			return;
 		}
@@ -15,13 +19,17 @@
 		isSubmitting = true;
 
 		try {
-			// Simulate API call
-			await new Promise((resolve) => setTimeout(resolve, 2000));
-
-			console.log(`Creating ${employeeCount} employees...`);
-			alert(`${employeeCount} Mitarbeiter wurden erfolgreich angelegt!`);
-
-			// Reset form
+			const data = await api<Record<'buildImport', Awaited<BulkImportEmployeeResponse>>>(
+				'/api/employee/bulk-import',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ employees: generateEmployeeList(+employeeCount) })
+				}
+			);
+			jobId.set(data.buildImport.id);
 			employeeCount = '';
 		} catch (error) {
 			console.error('Error creating employees:', error);

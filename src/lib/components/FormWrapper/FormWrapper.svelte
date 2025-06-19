@@ -15,8 +15,7 @@
 
 <style lang="scss">
 	.form-wrapper {
-		width: 800px;
-		max-width: 1000px;
+		width: 1224px;
 		border: 1px solid #e9ecef;
 		border-radius: 8px 0px 0px;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

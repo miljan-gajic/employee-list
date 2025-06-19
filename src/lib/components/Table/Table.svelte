@@ -1,127 +1,13 @@
 <script lang="ts">
-	import { authStore } from '$lib/stores/auth';
-	import type { StoreAuth } from '$lib/types/auth';
+	import type { MappedEmployeeDataSource } from '$lib/types/employee';
 	import _ from 'lodash';
-	import { onDestroy } from 'svelte';
-	import { writable } from 'svelte/store';
 
-	import ActionButton from '$lib/components/Button/Button.svelte';
 	// Data prop - make it reactive by exporting it
-	export let data = [
-		{
-			id: 14924,
-			firstName: 'Abigayle',
-			lastName: 'Sawayn',
-			status: 'inaktiv',
-			created: 'February 26, 2012'
-		},
-		{
-			id: 92478,
-			firstName: 'Margarette',
-			lastName: 'Mills',
-			status: 'aktiv',
-			created: 'August 7, 2017'
-		},
-		{
-			id: 56440,
-			firstName: 'Eda',
-			lastName: 'Schimmel',
-			status: 'inaktiv',
-			created: 'August 2, 2013'
-		},
-		{
-			id: 33173,
-			firstName: 'Broderick',
-			lastName: 'Bins',
-			status: 'aktiv',
-			created: 'February 9, 2015'
-		},
-		{
-			id: 23875,
-			firstName: 'Malcolm',
-			lastName: 'Bartell',
-			status: 'aktiv',
-			created: 'August 2, 2013'
-		},
-		{
-			id: 30625,
-			firstName: 'Jamarcus',
-			lastName: 'Lang',
-			status: 'aktiv',
-			created: 'August 2, 2013'
-		},
-		{
-			id: 1837,
-			firstName: 'Angus',
-			lastName: 'Conn',
-			status: 'aktiv',
-			created: 'November 7, 2017'
-		},
-		{
-			id: 47519,
-			firstName: 'Lawson',
-			lastName: 'Nader',
-			status: 'aktiv',
-			created: 'August 24, 2015'
-		},
-		{
-			id: 1,
-			firstName: 'Eliseo',
-			lastName: 'Klocko',
-			status: 'aktiv',
-			created: 'February 9, 2015'
-		},
-		{
-			id: 15164,
-			firstName: 'Pascale',
-			lastName: '',
-			status: 'aktiv',
-			created: 'February 11, 2014'
-		},
-		{
-			id: 44882,
-			firstName: 'Christine',
-			lastName: 'Mayer',
-			status: 'aktiv',
-			created: 'May 20, 2015'
-		},
-		{
-			id: 22524,
-			firstName: 'Jamison',
-			lastName: 'Schiller',
-			status: 'aktiv',
-			created: 'December 26, 2012'
-		},
-		{
-			id: 86767,
-			firstName: 'Darius',
-			lastName: 'Haley',
-			status: 'aktiv',
-			created: 'April 26, 2016'
-		},
-		{ id: 26566, firstName: 'Cary', lastName: 'Rowe', status: 'aktiv', created: 'May 31, 2015' },
-		{
-			id: 37587,
-			firstName: 'Lane',
-			lastName: 'McClure',
-			status: 'aktiv',
-			created: 'September 6, 2013'
-		},
-		{
-			id: 87228,
-			firstName: 'Margaretta',
-			lastName: 'McClure',
-			status: 'aktiv',
-			created: 'May 12, 2019'
-		},
-		{
-			id: 13856,
-			firstName: 'Caden',
-			lastName: 'Kertzmann',
-			status: 'aktiv',
-			created: 'May 29, 2017'
-		}
-	];
+	export let data: MappedEmployeeDataSource[] = [];
+	export let handleScroll: (event: Event) => void;
+	export let loading: boolean = false;
+	export let totalEntries: number = 0;
+	export let itemsPerPage: number = 0;
 
 	// Table configuration
 	export let columns = [
@@ -132,63 +18,48 @@
 		{ key: 'created', label: 'Erstellt' }
 	];
 
-	export let itemsPerPage = 15;
 	export let showFooter = true;
 
-	$: totalItems = data?.length || 0;
-	// $: totalPages = Math.ceil(totalItems / itemsPerPage);
-	$: displayedItems = Math.min(itemsPerPage, totalItems);
-	$: footerText = `${displayedItems} geladen von ${totalItems} Ergebnissen`;
-
-	const currentAuth = writable<StoreAuth | null>(null);
-
-	// Subscribe to the store and update the variable
-	const unsubscribe = authStore.subscribe((auth) => {
-		currentAuth.set(auth);
-	});
-
-	function logAuthValue() {
-		console.log('Current auth value:', $currentAuth?.token);
-	}
-
-	onDestroy(() => {
-		unsubscribe();
-	});
+	$: displayedItems = Math.min(itemsPerPage, totalEntries);
+	$: footerText = `${displayedItems} geladen von ${totalEntries} Ergebnissen`;
 </script>
 
 <div class="data-table-container">
-	<div class="table-wrapper">
-		<ActionButton on:click={logAuthValue}>click</ActionButton>
-		<table class="data-table">
-			<thead>
-				<tr>
-					{#each columns as column (column.key)}
-						<th class="table-header">
-							{column.label}
-						</th>
-					{/each}
-				</tr>
-			</thead>
-			<tbody>
-				{#each data as row (row.id)}
-					<tr class="table-row" class:odd={data.indexOf(row) % 2 === 1}>
-						<td class="table-cell">{row.id}</td>
-						<td class="table-cell">{row.firstName}</td>
-						<td class="table-cell">{row.lastName}</td>
-						<td class="table-cell">
-							<span
-								class="status-badge"
-								class:active={row.status === 'aktiv'}
-								class:inactive={row.status === 'inaktiv'}
-							>
-								{_.capitalize(row.status)}
-							</span>
-						</td>
-						<td class="table-cell">{row.created}</td>
+	<div class="table-wrapper" on:scroll={handleScroll}>
+		{#if loading || !data.length}
+			<div class="spinner"></div>
+		{:else}
+			<table class="data-table">
+				<thead>
+					<tr>
+						{#each columns as column (column.key)}
+							<th class="table-header">
+								{column.label}
+							</th>
+						{/each}
 					</tr>
-				{/each}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{#each data as row (row.personalNumber)}
+						<tr class="table-row" class:odd={data.indexOf(row) % 2 === 1}>
+							<td class="table-cell">{row.personalNumber}</td>
+							<td class="table-cell">{row.firstName}</td>
+							<td class="table-cell">{row.lastName}</td>
+							<td class="table-cell">
+								<span
+									class="status-badge"
+									class:active={row.active === 'active'}
+									class:inactive={row.active === 'inactive'}
+								>
+									{_.capitalize(row.active === 'active' ? 'Aktiv' : 'Inaktiv')}
+								</span>
+							</td>
+							<td class="table-cell">{row.startDate}</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		{/if}
 	</div>
 
 	{#if showFooter}
@@ -203,7 +74,7 @@
 		background: white;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 		overflow: hidden;
-		min-width: 800px;
+		min-width: 1224px;
 		font-family:
 			'Inter',
 			-apple-system,
@@ -213,7 +84,10 @@
 	.table-wrapper {
 		overflow-x: auto;
 		overflow-y: auto;
-		max-height: 600px; // Enables vertical scrolling
+		max-height: 600px;
+		min-height: 600px;
+		display: grid;
+		place-items: center;
 
 		&::-webkit-scrollbar {
 			width: 8px;
@@ -291,13 +165,13 @@
 
 	.status-badge {
 		display: inline-block;
-		padding: 4px 12px;
-		border-radius: 16px;
+		padding: 2px 8px;
+		border-radius: 5px;
 		font-size: 12px;
 		font-weight: 500;
 
 		&.active {
-			background-color: #d4edda;
+			background-color: #b4dfc4;
 			color: #18794e;
 		}
 
@@ -323,18 +197,21 @@
 		}
 	}
 
-	@media (max-width: 768px) {
-		.data-table {
-			font-size: 12px;
-		}
+	.spinner {
+		border: 4px solid rgba(0, 0, 0, 0.1);
+		border-top: 4px solid #10b981;
+		border-radius: 50%;
+		width: 50px;
+		height: 50px;
+		animation: spin 1s linear infinite;
+	}
 
-		.table-header,
-		.table-cell {
-			padding: 8px 12px;
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
 		}
-
-		.table-header {
-			font-size: 13px;
+		100% {
+			transform: rotate(360deg);
 		}
 	}
 </style>

@@ -11,6 +11,8 @@
 	export let type = 'text';
 	export let onInput: ((value?: string) => void) | null = null;
 	export let autocomplete: AutoFill | null = null;
+	export let testId: string = '';
+	export let id: string = '';
 
 	const dispatch = createEventDispatcher();
 
@@ -36,8 +38,8 @@
 		<label class="input-label" for="number-input">{label}</label>
 	{/if}
 	<input
-		id="number-input"
 		bind:value
+		{id}
 		{placeholder}
 		{disabled}
 		{min}
@@ -45,6 +47,7 @@
 		{step}
 		{type}
 		{autocomplete}
+		data-testid={testId}
 		class="number-input"
 		on:input={handleInput}
 		on:change={handleChange}
