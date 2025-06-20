@@ -9,6 +9,7 @@
 	import type { EmployeeListResponse, MappedEmployeeDataSource } from '$lib/types/employee';
 	import { mapEmployeeResponseToDataSource } from '$lib/utils/mappers';
 	import Logo from '$lib/components/Logo/Logo.svelte';
+	import { goto } from '$app/navigation';
 
 	let error: Error = new Error('');
 	const loadingBtn = writable(false);
@@ -33,6 +34,7 @@
 		} catch (err) {
 			error.message = (err as Error).message || 'Sign out failed. Please try again.';
 		} finally {
+			goto('/login');
 			loadingBtn.set(false);
 		}
 	}
