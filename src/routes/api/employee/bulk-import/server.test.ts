@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { POST, GET, OPTIONS } from '../bulk-import/+server';
 import * as employeesApi from '$lib/api/employees';
-import type { RequestEvent } from '@sveltejs/kit';
+import type { RequestEvent, Cookies } from '@sveltejs/kit';
 
 // Mock the API functions
 vi.mock('$lib/api/employees', () => ({
@@ -32,7 +32,7 @@ describe('Bulk Import API Endpoints', () => {
 
 	// Request and cookies mocks
 	let mockRequest: { json: () => Promise<{ employees: typeof mockEmployees }> };
-	let mockCookies: { get: (name: string) => string | undefined };
+	let mockCookies: Partial<Cookies>;
 	let mockRequestEvent: Partial<RequestEvent>;
 
 	beforeEach(() => {
@@ -45,7 +45,8 @@ describe('Bulk Import API Endpoints', () => {
 
 		// Setup cookies mock
 		mockCookies = {
-			get: vi.fn().mockReturnValue(mockToken)
+			get: vi.fn().mockReturnValue(mockToken),
+			set: vi.fn() as unknown as Cookies['set']
 		};
 
 		// Setup request event mock
@@ -75,6 +76,17 @@ describe('Bulk Import API Endpoints', () => {
 			expect(employeesApi.bulkImportEmployees).toHaveBeenCalledWith(mockEmployees, mockToken);
 			expect(response.status).toBe(201);
 			expect(responseBody).toEqual({ buldImport: mockResponse });
+			expect(mockCookies.set).toHaveBeenCalledWith(
+				'jobId',
+				mockJobId,
+				expect.objectContaining({
+					path: '/',
+					maxAge: 60 * 60 * 24 * 7,
+					httpOnly: false,
+					secure: false,
+					sameSite: 'lax'
+				})
+			);
 		});
 
 		it('should return 500 when bulkImportEmployees throws an error', async () => {

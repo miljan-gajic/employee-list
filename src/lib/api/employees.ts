@@ -17,7 +17,7 @@ export async function bulkImportEmployees(
 }
 
 export async function bulkImportStatus(id?: string, token?: string) {
-	return api(`/employees/bulk/import/${id}`, {}, token, false);
+	return api(`/employees/bulk/${id}`, {}, token, false);
 }
 
 export async function getEmployeesList(

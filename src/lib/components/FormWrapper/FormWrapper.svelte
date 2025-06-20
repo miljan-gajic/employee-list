@@ -37,18 +37,13 @@
 		.form-content {
 			display: flex;
 			gap: 12px;
-			align-items: flex-end;
+			align-items: center;
 		}
 
 		.form-content-container {
 			display: flex;
-			align-items: flex-start;
+			align-items: center;
 			gap: 24px;
-		}
-
-		@media (max-width: 768px) {
-			flex-direction: column;
-			align-items: stretch;
 		}
 	}
 </style>

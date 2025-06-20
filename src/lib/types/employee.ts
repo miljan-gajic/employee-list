@@ -62,3 +62,20 @@ export type MappedEmployeeDataSource = {
 	active: string;
 	startDate: string;
 };
+
+export type ImportStatus = {
+	clientId: string;
+	created: Date | string;
+	failed: number;
+	id: string;
+	method: string;
+	modified: Date | string;
+	rowsCreated: number;
+	rowsModified: number;
+	source: string;
+	sourceId: string;
+	status: string;
+	succeeded: number;
+	total: number;
+	userId: string;
+};
