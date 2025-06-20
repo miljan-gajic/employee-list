@@ -47,7 +47,6 @@
 			const response = await api<EmployeeListResponse>(
 				`/api/employee/employee-list?limit=${limit}&offset=${offset}`
 			);
-			console.log({ response });
 			const newEmployees = mapEmployeeResponseToDataSource(response?.data?.rows);
 
 			if (newEmployees.length === 0) {

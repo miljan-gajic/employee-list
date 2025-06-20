@@ -29,7 +29,7 @@
 					body: JSON.stringify({ employees: generateEmployeeList(+employeeCount) })
 				}
 			);
-			jobId.set(data.buildImport.id);
+			jobId.set(data?.buildImport?.id);
 			employeeCount = '';
 		} catch (error) {
 			console.error('Error creating employees:', error);

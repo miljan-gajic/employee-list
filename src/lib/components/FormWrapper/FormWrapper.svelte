@@ -17,6 +17,7 @@
 	.form-wrapper {
 		width: 1224px;
 		border: 1px solid #e9ecef;
+		background: white;
 		border-radius: 8px 0px 0px;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 		padding: 20px;

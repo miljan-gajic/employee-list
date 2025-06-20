@@ -5,6 +5,7 @@
 <style lang="scss">
 	.navbar {
 		width: 100%;
+		background: white;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;

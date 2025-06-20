@@ -198,3 +198,6 @@ Potential improvements for future versions:
 4. Implement unit and integration tests for all components
 5. Refresh Token rotation
 6. Form validation
+7. Global Sass variables and mixins for consistent styling
+8. Responsive design for mobile devices
+9. Status update UI piece

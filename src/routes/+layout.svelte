@@ -11,6 +11,7 @@
 <style lang="scss">
 	.main-layout {
 		display: flex;
+		background-color: #ecefec;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;

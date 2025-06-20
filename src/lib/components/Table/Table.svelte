@@ -1,15 +1,14 @@
 <script lang="ts">
-	import type { MappedEmployeeDataSource } from '$lib/types/employee';
 	import _ from 'lodash';
 
-	// Data prop - make it reactive by exporting it
+	import type { MappedEmployeeDataSource } from '$lib/types/employee';
+
 	export let data: MappedEmployeeDataSource[] = [];
 	export let handleScroll: (event: Event) => void;
 	export let loading: boolean = false;
 	export let totalEntries: number = 0;
 	export let itemsPerPage: number = 0;
 
-	// Table configuration
 	export let columns = [
 		{ key: 'id', label: 'Personalnummer' },
 		{ key: 'firstName', label: 'Vorname' },
